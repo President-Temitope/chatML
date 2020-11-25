@@ -16,8 +16,12 @@ export default function App() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} /> 
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Chat" component={Chat}/>
-        {/* <Stack.Screen name="ActiveUsers" component={ActiveUsers}/> */}
+        <Stack.Screen name="Chat" 
+        component={Chat} 
+        options={({ route }) => ({
+        title:route.params.userdata.username +" is chatting in " + route.params.userdata.language
+  })}/>
+        <Stack.Screen name="ActiveUsers" component={ActiveUsers}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

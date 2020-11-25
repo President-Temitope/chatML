@@ -1,14 +1,17 @@
 import React , {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image} from 'react-native';
-import Fire from '../config/Fire';
-import logo from '../assets/fpi.png';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image,Picker} from 'react-native';
+import Fire, {db} from '../config/Fire';
+import logo from '../assets/splash.png';
 
 
 export default function App({ navigation }) {
   const [email,setEmail] = useState('');
+  const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
   const[cpassword,setCpassword]= useState('');
   const[error,setError] = useState('');
+  const [language, setLanguage] = useState('');
+ 
   //const[button,setButton] = useState('true')
 
   handleSignUp = () => {
@@ -18,9 +21,23 @@ if (password != cpassword) {
    // setButton ('false')
   Fire.auth()
         .createUserWithEmailAndPassword(email, password)
-        .signInWithEmailAndPassword(email, password)
-        .then(() => navigation.navigate('ActiveUsers'))
-        .catch(error => setError(error))
+        .then((user) =>{ 
+        const userdata = {
+            uid : user.user.uid,
+            email : email,
+            password : password,
+            username : username,
+            language : language
+            }
+        db.collection('users')
+          .doc(user.user.uid)
+          .set(userdata)
+          
+          alert(username + ', your registration was successful.')
+        //navigation.navigate('ActiveUsers')
+        
+        }).then(navigation.navigate('ActiveUsers'))
+        .catch(error => alert(error))
 }
     
 }
@@ -44,6 +61,16 @@ if (password != cpassword) {
             onChangeText={text => setEmail(text)}
             textContentType={"emailAddress"}/>
 </View>
+
+<View style={styles.inputView} >
+          <TextInput  
+            style={styles.inputText}
+            placeholder="Username..." 
+            placeholderTextColor="#003f5c"
+            onChangeText={text => setUsername(text)}
+            />
+</View>
+
 <View style={styles.inputView}>
             <TextInput  
             style={styles.inputText}
@@ -61,6 +88,17 @@ if (password != cpassword) {
             secureTextEntry={true}
             onChangeText={text => setCpassword(text)}/>
 </View>
+
+<View style={styles.inputView}>
+     <Picker
+  selectedValue={language}
+  style={{ height: 50, width: 100 }}
+  onValueChange={(itemValue, itemIndex) => setLanguage(itemValue)}>
+  <Picker.Item label="English" value="English" />
+  <Picker.Item label="French" value="French" />
+  <Picker.Item label="Spanish" value="Spanish" />
+</Picker>
+  </View>   
 
         <TouchableOpacity 
         style={styles.loginBtn}

@@ -1,7 +1,8 @@
 import React,{ useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image} from 'react-native';
-import logo from '../assets/fpi.png';
+import logo from '../assets/splash.png';
 import Fire from '../config/Fire';
+
 
 export default function App({ navigation }) {
   const [email,setEmail] = useState('');
@@ -11,8 +12,8 @@ export default function App({ navigation }) {
   handleLogin = () => {
     Fire.auth()
         .signInWithEmailAndPassword(email, password)
-        .then(() => navigation.navigate('ActiveUsers'))
-        .catch(error => setError(error))
+       .then(navigation.navigate("ActiveUsers"))
+        .catch(error => alert(error))
 }
   return (
     //   Parent view
@@ -47,7 +48,7 @@ export default function App({ navigation }) {
         style={styles.loginBtn}
         >
           <Text style={styles.loginText}
-           onPress={() => navigation.navigate('Chat')}
+           onPress={() => handleLogin()}
           >Login</Text>
         </TouchableOpacity>
 

@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-
+import 'firebase/firestore';
 //import "firebase/auth";
 //import "firebase/database";
 //import "firebase/firestore";
@@ -17,6 +17,7 @@ var firebaseConfig = {
     appId: "1:744154451748:web:bcb6b8b3048740115eadb1",
     measurementId: "G-4HWSW2TK79"
   };
-
+  
 let Fire = firebase.initializeApp(firebaseConfig);
+export const db = firebase.firestore(); 
 export default Fire;
